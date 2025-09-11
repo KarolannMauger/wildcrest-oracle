@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Oracle
+  - Tree
   layers:
   - Default
   - TransparentFX
@@ -47,11 +49,11 @@ TagManager:
   - name: World
     uniqueID: 3377757281
     locked: 0
-  - name: Player
-    uniqueID: 3606742565
-    locked: 0
   - name: Foreground
     uniqueID: 271635545
+    locked: 0
+  - name: Player
+    uniqueID: 3606742565
     locked: 0
   m_RenderingLayers:
   - Default
