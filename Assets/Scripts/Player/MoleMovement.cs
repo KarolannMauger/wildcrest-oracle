@@ -91,7 +91,7 @@ public class MoleMovement : MonoBehaviour
             dir = lastMoveDir.y > 0 ? 0 : 3;
         }
 
-        Debug.Log($"moveInput: {moveInput}, lastMoveDir: {lastMoveDir}, lastMoveDir.y: {lastMoveDir.y}, dir: {dir}");
+        //Debug.Log($"moveInput: {moveInput}, lastMoveDir: {lastMoveDir}, lastMoveDir.y: {lastMoveDir.y}, dir: {dir}");
 
         //Animator Speed and Dir
         animator.SetFloat("speed", moveInput.sqrMagnitude);
@@ -104,18 +104,6 @@ public class MoleMovement : MonoBehaviour
                 spriteRenderer.flipX = lastMoveDir.x < 0;
             else
                 spriteRenderer.flipX = false;
-        }
-    }
-
-    // Handle collision with "Tree" objects
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Tree"))
-        {
-            animator?.SetTrigger("dead");
-            if (audioSource != null && audioSource.isPlaying)
-                audioSource.Stop();
-            this.enabled = false;
         }
     }
 }
