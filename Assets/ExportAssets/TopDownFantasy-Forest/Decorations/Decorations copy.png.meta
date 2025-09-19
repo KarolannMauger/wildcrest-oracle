@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 17e8506415e7747dfaafa6cef34bef88
+guid: 42b29c005e3894bc09bcc9dab911358a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9197536514452878188
-    second: MillPropeller_B_64x64_0
-  - first:
-      213: -2640763166052171537
-    second: MillPropeller_B_64x64_1
-  - first:
-      213: -4020329877265977921
-    second: MillPropeller_B_64x64_2
-  - first:
-      213: 6545028243819361451
-    second: MillPropeller_B_64x64_3
+      213: -8498313735171571433
+    second: Decorations copy_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -57,10 +48,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -84,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -122,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MillPropeller_B_64x64_0
+      name: Decorations copy_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 61
-        height: 60
+        x: 0
+        y: 0
+        width: 70
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,74 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 49c0a5f4549cb5080800000000000000
-      internalID: -9197536514452878188
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MillPropeller_B_64x64_1
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 1
-        width: 61
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fe0468f44ef1a5bd0800000000000000
-      internalID: -2640763166052171537
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MillPropeller_B_64x64_2
-      rect:
-        serializedVersion: 2
-        x: 133
-        y: 5
-        width: 52
-        height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fbdeba9f64be438c0800000000000000
-      internalID: -4020329877265977921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MillPropeller_B_64x64_3
-      rect:
-        serializedVersion: 2
-        x: 193
-        y: 1
-        width: 60
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ba470cdb28c94da50800000000000000
-      internalID: 6545028243819361451
+      spriteID: 71186411facef0a80800000000000000
+      internalID: -8498313735171571433
       vertices: []
       indices: 
       edges: []
@@ -223,10 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MillPropeller_B_64x64_0: -9197536514452878188
-      MillPropeller_B_64x64_1: -2640763166052171537
-      MillPropeller_B_64x64_2: -4020329877265977921
-      MillPropeller_B_64x64_3: 6545028243819361451
+      Decorations copy_0: -8498313735171571433
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
