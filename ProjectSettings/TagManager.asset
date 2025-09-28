@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Oracle
   - Hazard
+  - Enemy
   layers:
   - Default
   - TransparentFX
