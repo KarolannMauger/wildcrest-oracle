@@ -3,20 +3,22 @@ using UnityEngine;
 public class SimplePlayerXP : MonoBehaviour
 {
     [Header("XP Settings")]
-    public int maxLevel = 5; // 5 niveaux maximum
-    public float xpPerEnemy = 0.5f; // Chaque ennemi donne 0.5 XP
+    public int maxLevel = 5; 
+    public float xpPerEnemy = 0.5f;
     
     [Header("Current Stats - Read Only")]
-    public int currentLevel = 0; // Commence à 0
-    public float currentXP = 0f; // XP actuel (0.0 à 1.0 par niveau)
+    public int currentLevel = 0;
+    public float currentXP = 0f; 
     
     public bool IsMaxLevel => currentLevel >= maxLevel;
     
+    // Initialize references
     void Start()
     {
         Debug.Log($"[SimplePlayerXP] Initialized - Level {currentLevel}, Max Level {maxLevel}");
     }
     
+    // Gain XP from defeated enemies
     public void GainXP(int enemiesKilled)
     {
         if (IsMaxLevel)
@@ -24,34 +26,36 @@ public class SimplePlayerXP : MonoBehaviour
             Debug.Log("[SimplePlayerXP] Already at max level!");
             return;
         }
-        
+
         float xpGained = enemiesKilled * xpPerEnemy;
         currentXP += xpGained;
-        
+
         Debug.Log($"[SimplePlayerXP] Gained {xpGained} XP. Current XP: {currentXP}");
-        
-        // Vérifier les montées de niveau
+
+        // Check for level ups
         while (currentXP >= 1f && !IsMaxLevel)
         {
-            currentXP -= 1f; // Reset la barre XP
+            currentXP -= 1f; // Reset XP bar
             currentLevel++;
             Debug.Log($"[SimplePlayerXP] LEVEL UP! Now level {currentLevel}");
-            
+
             if (IsMaxLevel)
             {
-                currentXP = 0f; // Pas d'XP au niveau max
+                currentXP = 0f; 
                 Debug.Log("[SimplePlayerXP] MAX LEVEL REACHED!");
                 break;
             }
         }
     }
     
+    // Get current XP percentage (0.0 to 1.0)
     public float GetXPPercentage()
     {
         if (IsMaxLevel) return 1f;
-        return currentXP; // currentXP va de 0.0 à 1.0
+        return currentXP;
     }
     
+    // Get display text for current level
     public string GetXPDisplayText()
     {
         if (IsMaxLevel)
@@ -65,6 +69,7 @@ public class SimplePlayerXP : MonoBehaviour
         }
     }
     
+    // Get progress text for current XP (e.g., "1/2 XP")
     public string GetXPProgressText()
     {
         if (IsMaxLevel)
@@ -73,7 +78,7 @@ public class SimplePlayerXP : MonoBehaviour
         }
         else
         {
-            int currentXPDisplay = Mathf.FloorToInt(currentXP * 2); // 0, 1, ou 2 (pour 0, 0.5, 1.0)
+            int currentXPDisplay = Mathf.FloorToInt(currentXP * 2);
             return $"{currentXPDisplay}/2 XP";
         }
     }

@@ -16,10 +16,30 @@ public class HealthDisplay : MonoBehaviour
 
     public PlayerHealth playerHealth;
 
+    // Initialize references
     void Start()
     {
+        if (playerHealth == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                playerHealth = player.GetComponent<PlayerHealth>();
+            }
+        }
+
+        if (playerHealth == null)
+        {
+            Debug.LogError("[HealthDisplay] PlayerHealth not found!");
+            enabled = false;
+            return;
+        }
+
+        health = playerHealth.CurrentHealth;
+        maxHealth = playerHealth.maxHealth;
     }
 
+    // Update heart display based on current health
     void Update()
     {
         health = playerHealth.CurrentHealth;

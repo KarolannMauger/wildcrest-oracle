@@ -7,13 +7,14 @@ public class UltraSimpleXPDisplay : MonoBehaviour
     [Header("UI References")]
     public Slider xpSlider;
     public TextMeshProUGUI levelText;
-    public TextMeshProUGUI xpProgressText; // Nouveau: pour afficher "1/2 XP"
+    public TextMeshProUGUI xpProgressText;
     
     private SimplePlayerXP playerXP;
     
+    // Initialize references
     void Start()
     {
-        // Trouver SimplePlayerXP
+        // Search SimplePlayerXP
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -36,24 +37,25 @@ public class UltraSimpleXPDisplay : MonoBehaviour
         
         Debug.Log("[UltraSimpleXPDisplay] Initialized successfully");
     }
-    
+
+    // Update the XP display
     void Update()
     {
         if (playerXP == null) return;
-        
-        // Mettre à jour le slider (barre XP)
+
+        // Update the slider (XP bar)
         if (xpSlider != null)
         {
             xpSlider.value = playerXP.GetXPPercentage();
         }
-        
-        // Mettre à jour le texte de niveau
+
+        // Update the level text
         if (levelText != null)
         {
             levelText.text = playerXP.GetXPDisplayText();
         }
-        
-        // Mettre à jour le texte de progression XP
+
+        // Update the XP progress text
         if (xpProgressText != null)
         {
             xpProgressText.text = playerXP.GetXPProgressText();

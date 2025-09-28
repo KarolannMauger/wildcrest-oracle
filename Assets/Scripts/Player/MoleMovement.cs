@@ -91,8 +91,6 @@ public class MoleMovement : MonoBehaviour
             dir = lastMoveDir.y > 0 ? 0 : 3;
         }
 
-        //Debug.Log($"moveInput: {moveInput}, lastMoveDir: {lastMoveDir}, lastMoveDir.y: {lastMoveDir.y}, dir: {dir}");
-
         //Animator Speed and Dir
         animator.SetFloat("speed", moveInput.sqrMagnitude);
         animator.SetInteger("dir", dir);

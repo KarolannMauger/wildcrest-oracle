@@ -17,6 +17,7 @@ public class CameraFollow : MonoBehaviour
 
     private Camera cam;
 
+    // Initialize camera settings
     void Awake()
     {
         cam = GetComponent<Camera>();
@@ -26,6 +27,7 @@ public class CameraFollow : MonoBehaviour
         if (offset.z == 0) offset.z = -10f; // safety check to avoid black screen
     }
 
+    // Update camera position after all updates
     void LateUpdate()
     {
         if (target == null) return;

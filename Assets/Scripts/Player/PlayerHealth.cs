@@ -30,6 +30,7 @@ public class PlayerHealth : MonoBehaviour
     private Coroutine shakeCoroutine;
     private Coroutine colorFlashCoroutine;
 
+    // Initialize components and variables
     void Awake()
     {
         CurrentHealth = maxHealth;
@@ -48,16 +49,17 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log($"[PlayerHealth] Init HP = {CurrentHealth}/{maxHealth}");
     }
 
+    // Function to apply damage to the player
     public void TakeDamage(int dmg)
     {
         if (isDead || dmg <= 0) return;
-        
+
         CurrentHealth = Mathf.Max(0, CurrentHealth - dmg);
         Debug.Log($"[PlayerHealth] -{dmg} HP → {CurrentHealth}/{maxHealth}");
-        
-        // Effets de dégâts
+
+        // Damage effects
         PlayDamageEffects();
-        
+
         if (CurrentHealth <= 0) Die();
     }
 
@@ -80,6 +82,7 @@ public class PlayerHealth : MonoBehaviour
         return gained > 0;
     }
 
+    // Handle player death
     void Die()
     {
         if (isDead) return;
@@ -92,10 +95,11 @@ public class PlayerHealth : MonoBehaviour
         if (reloadDelay <= 0f) SceneManager.LoadScene(sceneToLoad);
         else StartCoroutine(CoDelay(sceneToLoad, reloadDelay));
     }
- 
+
+    // Play visual and audio effects when player taking damage
     private void PlayDamageEffects()
     {
-        // Son de dégâts
+        // Damage sound effect futur feature
         if (takeDamageSfx && audioSource)
         {
             audioSource.PlayOneShot(takeDamageSfx);
@@ -106,12 +110,13 @@ public class PlayerHealth : MonoBehaviour
             StopCoroutine(shakeCoroutine);
         shakeCoroutine = StartCoroutine(ShakeEffect());
 
-        // Flash de couleur
+        // Flash effect
         if (colorFlashCoroutine != null)
             StopCoroutine(colorFlashCoroutine);
         colorFlashCoroutine = StartCoroutine(ColorFlashEffect());
     }
 
+    // Shake the player to indicate damage
     private IEnumerator ShakeEffect()
     {
         originalPosition = transform.position;
@@ -131,6 +136,7 @@ public class PlayerHealth : MonoBehaviour
         shakeCoroutine = null;
     }
 
+    // Flash the sprite color to indicate damage
     private IEnumerator ColorFlashEffect()
     {
         if (!spriteRenderer) yield break;
@@ -141,6 +147,7 @@ public class PlayerHealth : MonoBehaviour
         colorFlashCoroutine = null;
     }
 
+    // Delay before reloading the scene
     IEnumerator CoDelay(string name, float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);

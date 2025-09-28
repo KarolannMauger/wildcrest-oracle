@@ -19,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
     private float lastAttackTime = -999f;
     private List<GameObject> enemiesInRange = new List<GameObject>();
     
+    // Initialize references
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -33,38 +34,41 @@ public class PlayerAttack : MonoBehaviour
         }
     }
     
+    // Calculate player damage based on level
     int GetPlayerDamage()
     {
         if (playerXP == null) return 1;
-        
-        // Dégâts basés sur le niveau : Level 0-1 = 1 dégât, Level 2-3 = 2 dégâts, Level 4-5 = 3 dégâts
+
+        // Damage based on level: Level 0-1 = 1 damage, Level 2-3 = 2 damage, Level 4-5 = 3 damage
         if (playerXP.currentLevel >= 4) return 3;
         if (playerXP.currentLevel >= 2) return 2;
         return 1;
     }
-    
+
+    // Detect enemies in range and handle attack input
     void Update()
     {
-        // Détecter les ennemis à portée
+        // Detect enemies in range
         DetectEnemiesInRange();
-        
-        // Attaquer si la touche est pressée
+
+        // Attack if the key is pressed
         if (Input.GetKeyDown(attackKey))
         {
             TryAttack();
         }
     }
     
+    // Detect and store enemies within attack range
     void DetectEnemiesInRange()
     {
         enemiesInRange.Clear();
-        
-        // Trouver tous les colliders dans le rayon d'attaque
+
+        // Find all colliders within the attack radius
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, attackRange);
         
         foreach (Collider2D hitCollider in hitColliders)
         {
-            // Vérifier si c'est un ennemi
+            // Check if it's an enemy
             if (hitCollider.CompareTag("Enemy") && hitCollider.gameObject != gameObject)
             {
                 enemiesInRange.Add(hitCollider.gameObject);
@@ -74,7 +78,7 @@ public class PlayerAttack : MonoBehaviour
     
     void TryAttack()
     {
-        // Vérifier le cooldown
+        // Check cooldown
         if (Time.time - lastAttackTime < attackCooldown)
         {
             Debug.Log("[PlayerAttack] Attack on cooldown");
@@ -88,8 +92,8 @@ public class PlayerAttack : MonoBehaviour
         }
         
         Debug.Log($"[PlayerAttack] Attacking {enemiesInRange.Count} enemy(ies)");
-        
-        // Attaquer tous les ennemis à portée
+
+        // Attack all enemies in range
         foreach (GameObject enemy in enemiesInRange)
         {
             if (enemy != null)
@@ -97,8 +101,8 @@ public class PlayerAttack : MonoBehaviour
                 AttackEnemy(enemy);
             }
         }
-        
-        // Jouer le son d'attaque
+
+        // Play attack sound futur feature
         if (attackSfx && audioSource)
         {
             audioSource.PlayOneShot(attackSfx);
@@ -107,15 +111,16 @@ public class PlayerAttack : MonoBehaviour
         lastAttackTime = Time.time;
     }
     
+    // Attack a single enemy by invoking its TakeDamage method via reflection
     void AttackEnemy(GameObject enemy)
     {
         Debug.Log($"[PlayerAttack] Attacking enemy: {enemy.name}");
-        
-        // Chercher EnemyHealth
+
+        // Find EnemyHealth
         var enemyHealth = enemy.GetComponent<MonoBehaviour>();
         if (enemyHealth != null)
         {
-            // Essayer d'appeler TakeDamage via réflection
+            // Try to call TakeDamage via reflection
             var takeDamageMethod = enemyHealth.GetType().GetMethod("TakeDamage");
             if (takeDamageMethod != null)
             {
@@ -125,8 +130,8 @@ public class PlayerAttack : MonoBehaviour
                 return;
             }
         }
-        
-        // Fallback: chercher tous les MonoBehaviour sur l'ennemi
+
+        // Fallback: find all MonoBehaviour on the enemy
         var components = enemy.GetComponents<MonoBehaviour>();
         foreach (var component in components)
         {
@@ -146,15 +151,16 @@ public class PlayerAttack : MonoBehaviour
         Debug.LogWarning($"[PlayerAttack] No TakeDamage method found on {enemy.name}");
     }
     
+    // Visualize attack range in the editor
     void OnDrawGizmosSelected()
     {
         if (!showAttackRange) return;
-        
-        // Visualiser la portée d'attaque
+
+        // Visualize attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-        
-        // Visualiser les ennemis détectés
+
+        // Visualize detected enemies
         Gizmos.color = Color.yellow;
         foreach (GameObject enemy in enemiesInRange)
         {
