@@ -14,21 +14,16 @@ public class SimplePlayerXP : MonoBehaviour
     
     void Start()
     {
-        Debug.Log($"[SimplePlayerXP] Initialized - Level {currentLevel}, Max Level {maxLevel}");
+        // XP system initialized
     }
     
     public void GainXP(int enemiesKilled)
     {
-        if (IsMaxLevel)
-        {
-            Debug.Log("[SimplePlayerXP] Already at max level!");
-            return;
-        }
+        if (IsMaxLevel) return;
 
         float xpGained = enemiesKilled * xpPerEnemy;
         currentXP += xpGained;
         
-        Debug.Log($"[SimplePlayerXP] Gained {xpGained} XP. Current XP: {currentXP}");
         CheckLevelUp();
     }
     
@@ -37,12 +32,6 @@ public class SimplePlayerXP : MonoBehaviour
         if (currentLevel < maxLevel && currentXP >= GetXPNeededForNextLevel())
         {
             currentLevel++;
-            Debug.Log($"[SimplePlayerXP] LEVEL UP! Now level {currentLevel}");
-            
-            if (IsMaxLevel)
-            {
-                Debug.Log("[SimplePlayerXP] MAX LEVEL REACHED!");
-            }
         }
     }
     
@@ -103,7 +92,6 @@ public class SimplePlayerXP : MonoBehaviour
     {
         currentLevel = 0;
         currentXP = 0f;
-        Debug.Log("[SimplePlayerXP] Reset to level 0");
     }
     
     // Methods for UI Display
