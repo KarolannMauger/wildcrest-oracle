@@ -25,19 +25,15 @@ public class EnemyHealthBarSprite : MonoBehaviour
         
         if (enemyHealth == null)
         {
-            Debug.LogError("[EnemyHealthBarSprite] No EnemyHealth found!");
             enabled = false;
             return;
         }
         
         if (spriteRenderer == null)
         {
-            Debug.LogError("[EnemyHealthBarSprite] No SpriteRenderer found!");
             enabled = false;
             return;
         }
-        
-        Debug.Log("[EnemyHealthBarSprite] Initialized for " + enemyHealth.name);
     }
     
     // Update is called once per frame
@@ -46,7 +42,7 @@ public class EnemyHealthBarSprite : MonoBehaviour
         UpdateHealthBarColor();
     }
     
-    // Update the health bar color based on current health percentage
+    // Update health bar color based on current health percentage
     void UpdateHealthBarColor()
     {
         if (enemyHealth == null || spriteRenderer == null) return;
@@ -67,7 +63,7 @@ public class EnemyHealthBarSprite : MonoBehaviour
             spriteRenderer.color = criticalColor;
         }
 
-        // Hide the bar if the enemy is dead
+        // Hide the bar if enemy is dead
         if (enemyHealth.IsDead())
         {
             spriteRenderer.color = Color.clear;
