@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3465740042713321994}
   - component: {fileID: 5554857888646925435}
   - component: {fileID: 8412867611682057664}
+  - component: {fileID: 5730616112622145003}
   m_Layer: 0
   m_Name: GreenPigEnemy1
   m_TagString: Enemy
@@ -301,6 +302,34 @@ MonoBehaviour:
   xpReward: 1
   takeDamageSfx: {fileID: 0}
   deathSfx: {fileID: 0}
+--- !u!114 &5730616112622145003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6592573599089692026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95f2af36b49c428f90aa30f27a197e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModularEnemy
+  enemyType: 2
+  movementType: 1
+  leftPoint: {fileID: 0}
+  rightPoint: {fileID: 0}
+  topPoint: {fileID: 0}
+  bottomPoint: {fileID: 0}
+  speed: 2
+  maxHealth: 3
+  touchDamage: 1
+  attackCooldown: 1
+  player: {fileID: 0}
+  behindDetectionRadius: 3
+  enablePlayerDetection: 1
+  attackTrigger: Attack
+  animationSpeed: 0.5
+  hitSfx: {fileID: 8300000, guid: 2c39bb480b38e40cca0d383fad02ca97, type: 3}
 --- !u!1001 &6213326148220728073
 PrefabInstance:
   m_ObjectHideFlags: 0

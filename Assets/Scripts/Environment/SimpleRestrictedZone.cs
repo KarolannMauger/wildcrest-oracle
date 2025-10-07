@@ -3,9 +3,14 @@ using UnityEngine;
 public class SimpleRestrictedZone : MonoBehaviour
 {
     [Header("Settings")]
-    public int requiredLevel = 5; 
+    public int requiredLevel = 4; 
     public GameObject blockingWall; 
     public float pushForce = 1000f;
+    
+    [Header("Oracle Dialog")]
+    public Transform oracleNPC; // Référence vers l'Oracle NPC
+    public string oracleMessage = "Vous n'avez pas encore l'XP nécessaire pour venir me voir...";
+    public float dialogDisplayTime = 3f;
     
     private SimplePlayerXP playerXP;
     private bool wasAccessible = false;
@@ -135,10 +140,34 @@ public class SimpleRestrictedZone : MonoBehaviour
         if (playerXP.currentLevel < requiredLevel)
         {
             Debug.Log($"[SimpleRestrictedZone] Access denied! You are level {playerXP.currentLevel}, need level {requiredLevel}");
+            ShowOracleDialog();
         }
         else
         {
             Debug.Log("[SimpleRestrictedZone] Welcome to the restricted area!");
         }
+    }
+    
+    // Afficher le dialogue de l'Oracle
+    void ShowOracleDialog()
+    {
+        if (oracleNPC == null)
+        {
+            Debug.LogWarning("[SimpleRestrictedZone] Oracle NPC not assigned!");
+            return;
+        }
+        
+        // Utiliser SendMessage pour déclencher le dialogue
+        oracleNPC.SendMessage("TriggerOracleDialog", new OracleDialogData { message = oracleMessage, displayTime = dialogDisplayTime }, SendMessageOptions.DontRequireReceiver);
+        
+        Debug.Log("[SimpleRestrictedZone] Oracle dialog triggered");
+    }
+    
+    // Structure pour passer les données du dialogue
+    [System.Serializable]
+    public class OracleDialogData
+    {
+        public string message;
+        public float displayTime;
     }
 }

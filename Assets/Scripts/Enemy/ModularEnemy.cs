@@ -3,15 +3,13 @@ using UnityEngine;
 public enum EnemyType
 {
     Cat,    // Level 0: 3 HP, 1 dégât
-    Frog,   // Level 2: 6 HP, 2 dégâts  
     Pig     // Level 4: 10 HP, 3 dégâts
 }
 
 public enum MovementType
 {
     Static,         // Static
-    Horizontal,     // Left-Right
-    Vertical        // Top-Bottom
+    Horizontal      // Left-Right
 }
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
@@ -24,10 +22,6 @@ public class ModularEnemy : MonoBehaviour
     [Header("Movement - Horizontal")]
     public Transform leftPoint;
     public Transform rightPoint;
-    
-    [Header("Movement - Vertical")]
-    public Transform topPoint;
-    public Transform bottomPoint;
     
     [Header("General Movement")]
     public float speed = 2f;
@@ -101,12 +95,6 @@ public class ModularEnemy : MonoBehaviour
                 if (enemyHealth) enemyHealth.maxHealth = maxHealth;
                 break;
                 
-            case EnemyType.Frog:
-                maxHealth = 6;
-                touchDamage = 2;
-                if (enemyHealth) enemyHealth.maxHealth = maxHealth;
-                break;
-                
             case EnemyType.Pig:
                 maxHealth = 10;
                 touchDamage = 3;
@@ -138,10 +126,6 @@ public class ModularEnemy : MonoBehaviour
             case MovementType.Horizontal:
                 MoveHorizontal();
                 break;
-                
-            case MovementType.Vertical:
-                MoveVertical();
-                break;
         }
     }
     
@@ -159,26 +143,6 @@ public class ModularEnemy : MonoBehaviour
             movingPositive = false;
         }
         else if (!movingPositive && transform.position.x <= leftPoint.position.x)
-        {
-            movingPositive = true;
-        }
-    }
-    
-    // Move enemy vertically between topPoint and bottomPoint
-    void MoveVertical()
-    {
-        if (!topPoint || !bottomPoint) return;
-        
-        float dir = movingPositive ? 1f : -1f;
-        rb.linearVelocity = new Vector2(0f, dir * speed);
-
-        // No flip for vertical movement
-
-        if (movingPositive && transform.position.y >= topPoint.position.y)
-        {
-            movingPositive = false;
-        }
-        else if (!movingPositive && transform.position.y <= bottomPoint.position.y)
         {
             movingPositive = true;
         }
@@ -253,10 +217,6 @@ public class ModularEnemy : MonoBehaviour
         {
             direction = movingPositive ? Vector3.right : Vector3.left;
         }
-        else if (movementType == MovementType.Vertical)
-        {
-            direction = movingPositive ? Vector3.up : Vector3.down;
-        }
         Gizmos.DrawRay(transform.position, direction * 1.5f);
         
         // Movement points
@@ -269,16 +229,6 @@ public class ModularEnemy : MonoBehaviour
                     Gizmos.DrawLine(leftPoint.position, rightPoint.position);
                     Gizmos.DrawWireSphere(leftPoint.position, 0.2f);
                     Gizmos.DrawWireSphere(rightPoint.position, 0.2f);
-                }
-                break;
-                
-            case MovementType.Vertical:
-                if (topPoint && bottomPoint)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(topPoint.position, bottomPoint.position);
-                    Gizmos.DrawWireSphere(topPoint.position, 0.2f);
-                    Gizmos.DrawWireSphere(bottomPoint.position, 0.2f);
                 }
                 break;
         }

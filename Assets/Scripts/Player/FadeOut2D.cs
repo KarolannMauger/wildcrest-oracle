@@ -1,9 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
  
 public class FadeOut2D : MonoBehaviour
 {
     public float fadeDuration = 1f;     
-    public bool destroyAfter = true;    
+    public bool destroyAfter = true;
+    
+    [Header("Scene Transition")]
+    public string victorySceneName = "Victory";
+    public float delayBeforeSceneChange = 1f;    
  
     private SpriteRenderer sr;          
     private bool fading = false;        
@@ -29,7 +35,8 @@ public class FadeOut2D : MonoBehaviour
             if (destroyAfter) Destroy(gameObject);
             else gameObject.SetActive(false);
             
-            Time.timeScale = 0f;
+            // Démarrer la transition vers la scène de victoire
+            StartCoroutine(LoadVictoryScene());
         }
     }
  
@@ -46,5 +53,16 @@ public class FadeOut2D : MonoBehaviour
             }
             // Disable all colliders
         }
+    }
+    
+    // Coroutine pour charger la scène de victoire après un délai
+    IEnumerator LoadVictoryScene()
+    {
+        Debug.Log($"[FadeOut2D] Waiting {delayBeforeSceneChange} seconds before loading {victorySceneName}");
+        yield return new WaitForSecondsRealtime(delayBeforeSceneChange);
+        
+        Debug.Log($"[FadeOut2D] Loading victory scene: {victorySceneName}");
+        Time.timeScale = 1f; // Remettre le temps normal avant de changer de scène
+        SceneManager.LoadScene(victorySceneName);
     }
 }

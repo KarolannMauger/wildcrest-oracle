@@ -12,13 +12,11 @@ public class SimplePlayerXP : MonoBehaviour
     
     public bool IsMaxLevel => currentLevel >= maxLevel;
     
-    // Initialize references
     void Start()
     {
         Debug.Log($"[SimplePlayerXP] Initialized - Level {currentLevel}, Max Level {maxLevel}");
     }
     
-    // Gain XP from defeated enemies
     public void GainXP(int enemiesKilled)
     {
         if (IsMaxLevel)
@@ -29,63 +27,73 @@ public class SimplePlayerXP : MonoBehaviour
 
         float xpGained = enemiesKilled * xpPerEnemy;
         currentXP += xpGained;
-
+        
         Debug.Log($"[SimplePlayerXP] Gained {xpGained} XP. Current XP: {currentXP}");
-
-        // Check for level ups
-        while (currentXP >= 1f && !IsMaxLevel)
+        CheckLevelUp();
+    }
+    
+    void CheckLevelUp()
+    {
+        if (currentLevel < maxLevel && currentXP >= GetXPNeededForNextLevel())
         {
-            currentXP -= 1f; // Reset XP bar
             currentLevel++;
             Debug.Log($"[SimplePlayerXP] LEVEL UP! Now level {currentLevel}");
-
+            
             if (IsMaxLevel)
             {
-                currentXP = 0f; 
                 Debug.Log("[SimplePlayerXP] MAX LEVEL REACHED!");
-                break;
             }
         }
     }
     
-    // Get current XP percentage (0.0 to 1.0)
-    public float GetXPPercentage()
+    public float GetXPNeededForNextLevel()
+    {
+        if (IsMaxLevel) return 0f;
+        return currentLevel + 1;
+    }
+    
+    public float GetLevelProgress()
     {
         if (IsMaxLevel) return 1f;
-        return currentXP;
+        
+        float xpForCurrentLevel = currentLevel;
+        float xpForNextLevel = GetXPNeededForNextLevel();
+        float progressInLevel = currentXP - xpForCurrentLevel;
+        float xpNeededForLevelUp = xpForNextLevel - xpForCurrentLevel;
+        
+        if (xpNeededForLevelUp <= 0) return 1f;
+        
+        return Mathf.Clamp01(progressInLevel / xpNeededForLevelUp);
     }
     
-    // Get display text for current level
-    public string GetXPDisplayText()
+    public float GetXPToNextLevel()
+    {
+        if (IsMaxLevel) return 0f;
+        return GetXPNeededForNextLevel() - currentXP;
+    }
+    
+    public float GetPercentageToNextLevel()
+    {
+        if (IsMaxLevel) return 100f;
+        
+        float needed = GetXPNeededForNextLevel();
+        if (needed <= 0) return 100f;
+        
+        return (currentXP / needed) * 100f;
+    }
+    
+    public string GetLevelInfo()
     {
         if (IsMaxLevel)
         {
-            return $"Level {currentLevel} - MAX";
+            return $"MAX (Level {currentLevel})";
         }
-        else
-        {
-            int nextLevel = currentLevel + 1;
-            return $"Level {currentLevel} → {nextLevel}";
-        }
+        
+        return $"Level {currentLevel} ({GetPercentageToNextLevel():F1}%)";
     }
     
-    // Get progress text for current XP (e.g., "1/2 XP")
-    public string GetXPProgressText()
-    {
-        if (IsMaxLevel)
-        {
-            return "MAX LEVEL";
-        }
-        else
-        {
-            int currentXPDisplay = Mathf.FloorToInt(currentXP * 2);
-            return $"{currentXPDisplay}/2 XP";
-        }
-    }
-    
-    // Test methods
     [ContextMenu("Add 1 XP (0.5)")]
-    public void TestAddXP()
+    void DebugAddXP()
     {
         GainXP(1);
     }
@@ -96,5 +104,26 @@ public class SimplePlayerXP : MonoBehaviour
         currentLevel = 0;
         currentXP = 0f;
         Debug.Log("[SimplePlayerXP] Reset to level 0");
+    }
+    
+    // Methods for UI Display
+    public float GetXPPercentage()
+    {
+        return GetLevelProgress();
+    }
+    
+    public string GetXPDisplayText()
+    {
+        return GetLevelInfo();
+    }
+    
+    public string GetXPProgressText()
+    {
+        if (IsMaxLevel)
+        {
+            return "MAX LEVEL";
+        }
+        
+        return $"{currentXP:F1}/{GetXPNeededForNextLevel():F1} XP";
     }
 }
