@@ -14,7 +14,6 @@ public class QuitGame : MonoBehaviour
  
     private void TaskOnClick()
     {
-        Debug.Log("Quitter le jeu !");
         Application.Quit();
  
         #if UNITY_EDITOR
