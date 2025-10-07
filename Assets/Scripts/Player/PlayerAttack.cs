@@ -30,7 +30,7 @@ public class PlayerAttack : MonoBehaviour
         playerXP = GetComponent<SimplePlayerXP>();
         if (playerXP == null)
         {
-            Debug.LogError("[PlayerAttack] SimplePlayerXP not found!");
+            enabled = false;
         }
     }
     
@@ -81,17 +81,13 @@ public class PlayerAttack : MonoBehaviour
         // Check cooldown
         if (Time.time - lastAttackTime < attackCooldown)
         {
-            Debug.Log("[PlayerAttack] Attack on cooldown");
             return;
         }
         
         if (enemiesInRange.Count == 0)
         {
-            Debug.Log("[PlayerAttack] No enemies in range");
             return;
         }
-        
-        Debug.Log($"[PlayerAttack] Attacking {enemiesInRange.Count} enemy(ies)");
 
         // Attack all enemies in range
         foreach (GameObject enemy in enemiesInRange)
@@ -102,7 +98,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        // Play attack sound futur feature
+        // Play attack sound
         if (attackSfx && audioSource)
         {
             audioSource.PlayOneShot(attackSfx);
@@ -111,11 +107,9 @@ public class PlayerAttack : MonoBehaviour
         lastAttackTime = Time.time;
     }
     
-    // Attack a single enemy by invoking its TakeDamage method via reflection
+    // Attack a single enemy by invoking its TakeDamage method
     void AttackEnemy(GameObject enemy)
     {
-        Debug.Log($"[PlayerAttack] Attacking enemy: {enemy.name}");
-
         // Find EnemyHealth
         var enemyHealth = enemy.GetComponent<MonoBehaviour>();
         if (enemyHealth != null)
@@ -126,12 +120,11 @@ public class PlayerAttack : MonoBehaviour
             {
                 int damage = GetPlayerDamage();
                 takeDamageMethod.Invoke(enemyHealth, new object[] { damage });
-                Debug.Log($"[PlayerAttack] Dealt {damage} damage to {enemy.name} (Player Level {(playerXP != null ? playerXP.currentLevel : 0)})");
                 return;
             }
         }
 
-        // Fallback: find all MonoBehaviour on the enemy
+        // Fallback: find all MonoBehaviour on enemy
         var components = enemy.GetComponents<MonoBehaviour>();
         foreach (var component in components)
         {
@@ -142,13 +135,10 @@ public class PlayerAttack : MonoBehaviour
                 {
                     int damage = GetPlayerDamage();
                     takeDamageMethod.Invoke(component, new object[] { damage });
-                    Debug.Log($"[PlayerAttack] Dealt {damage} damage to {enemy.name} (Player Level {(playerXP != null ? playerXP.currentLevel : 0)})");
                     return;
                 }
             }
         }
-        
-        Debug.LogWarning($"[PlayerAttack] No TakeDamage method found on {enemy.name}");
     }
     
     // Visualize attack range in the editor
