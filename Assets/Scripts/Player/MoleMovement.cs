@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class MoleMovement : MonoBehaviour
 {
-    [Header("Mouvement")]
+    [Header("Movement")]
     public float speed = 5f;
     public bool normalize = true;
 
@@ -91,11 +91,11 @@ public class MoleMovement : MonoBehaviour
             dir = lastMoveDir.y > 0 ? 0 : 3;
         }
 
-        //Animator Speed and Dir
+        //Animator speed and direction
         animator.SetFloat("speed", moveInput.sqrMagnitude);
         animator.SetInteger("dir", dir);
 
-        //FlipX
+        //Flip X
         if (spriteRenderer != null)
         {
             if (dir == 2)
