@@ -7,20 +7,20 @@ public class SimpleDialogSystem : MonoBehaviour
 {
     [Header("Dialog Settings")]
     public string[] dialogLines = {
-        "Bienvenu Luma, j'ai attendu que tu cherche ton frère,",
-        "seul l'Oracle peut tout te dire.",
-        "Cependant pour rencontrer l'Oracle tu dois chasser",
-        "les chats sauvages et les cochons verts.",
-        "Aide-toi des pêches dans la forêt pour survivre.",
-        "L'Oracle se trouve tout en haut à droite du village",
-        "sur une petite colline."
+        "Welcome Luma, I have been waiting for you to search for your brother,",
+        "only the Oracle can tell you everything.",
+        "However to meet the Oracle you must hunt",
+        "wild cats and green pigs.",
+        "Use the peaches in the forest to survive.",
+        "The Oracle is located at the top right of the village",
+        "on a small hill."
     };
     
     [Header("UI References")]
-    public GameObject dialogBox; // Le sprite de la box dialog
+    public GameObject dialogBox; // Dialog box sprite
     public TextMeshProUGUI dialogText; 
-    public float textSpeed = 0.05f; // Vitesse d'apparition du texte
-    public float autoAdvanceDelay = 3f; // Délai avant passage automatique
+    public float textSpeed = 0.05f; // Text appearance speed
+    public float autoAdvanceDelay = 3f; // Delay before auto advance
     
     [Header("Detection")]
     public float detectionRadius = 2f;
@@ -28,7 +28,7 @@ public class SimpleDialogSystem : MonoBehaviour
     
     [Header("Controls")]
     public KeyCode advanceKey = KeyCode.F;
-    public bool useAutoAdvance = true; // true = auto, false = manuel avec F
+    public bool useAutoAdvance = true; // true = auto, false = manual with F
     
     // Private variables
     private Transform player;
@@ -41,31 +41,24 @@ public class SimpleDialogSystem : MonoBehaviour
     
     void Start()
     {
-        // Trouver le joueur
+        // Find player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
             player = playerObj.transform;
         }
         
-        // Cacher la dialog box au début
+        // Hide dialog box at start
         if (dialogBox != null)
         {
             dialogBox.SetActive(false);
         }
         
-        // Vérifier les références
-        if (dialogText == null)
+        // Check references
+        if (dialogText == null || dialogBox == null)
         {
-            Debug.LogError("[SimpleDialogSystem] Dialog Text not assigned!");
+            enabled = false;
         }
-        
-        if (dialogBox == null)
-        {
-            Debug.LogError("[SimpleDialogSystem] Dialog Box not assigned!");
-        }
-        
-        Debug.Log($"[SimpleDialogSystem] Initialized - Auto advance: {useAutoAdvance}");
     }
     
     void Update()
@@ -83,13 +76,13 @@ public class SimpleDialogSystem : MonoBehaviour
         
         if (playerNearby && !playerInRange)
         {
-            // Joueur entre dans la zone
+            // Player enters zone
             playerInRange = true;
             StartDialog();
         }
         else if (!playerNearby && playerInRange)
         {
-            // Joueur sort de la zone
+            // Player exits zone
             playerInRange = false;
             EndDialog();
         }
@@ -117,7 +110,6 @@ public class SimpleDialogSystem : MonoBehaviour
             dialogBox.SetActive(true);
         }
         
-        Debug.Log("[SimpleDialogSystem] Dialog started");
         ShowCurrentLine();
     }
     
@@ -141,7 +133,7 @@ public class SimpleDialogSystem : MonoBehaviour
             StopCoroutine(autoAdvanceCoroutine);
         }
         
-        // Commencer l'animation de texte
+        // Start text animation
         typingCoroutine = StartCoroutine(TypeText(currentLine));
     }
     
@@ -157,7 +149,7 @@ public class SimpleDialogSystem : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
         
-        // Texte terminé, démarrer auto-advance si activé
+        // Text finished, start auto-advance if enabled
         if (useAutoAdvance)
         {
             autoAdvanceCoroutine = StartCoroutine(AutoAdvanceAfterDelay());
@@ -180,7 +172,6 @@ public class SimpleDialogSystem : MonoBehaviour
     {
         dialogCompleted = true;
         EndDialog();
-        Debug.Log("[SimpleDialogSystem] Dialog completed!");
     }
     
     void EndDialog()
@@ -192,7 +183,7 @@ public class SimpleDialogSystem : MonoBehaviour
             dialogBox.SetActive(false);
         }
         
-        // Arrêter toutes les coroutines
+        // Stop all coroutines
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
@@ -201,26 +192,23 @@ public class SimpleDialogSystem : MonoBehaviour
         {
             StopCoroutine(autoAdvanceCoroutine);
         }
-        
-        Debug.Log("[SimpleDialogSystem] Dialog ended");
     }
     
-    // Méthode pour réinitialiser le dialogue (optionnel)
+    // Method to reset dialog (optional)
     public void ResetDialog()
     {
         dialogCompleted = false;
         currentLineIndex = 0;
         EndDialog();
-        Debug.Log("[SimpleDialogSystem] Dialog reset");
     }
     
-    // Dessiner la zone de détection dans l'éditeur
+    // Draw detection zone in editor
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
         
-        // Dessiner une ligne vers le joueur si trouvé
+        // Draw line to player if found
         if (player != null)
         {
             float distance = Vector2.Distance(transform.position, player.position);
