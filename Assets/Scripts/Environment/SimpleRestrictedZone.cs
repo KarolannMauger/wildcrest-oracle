@@ -8,8 +8,8 @@ public class SimpleRestrictedZone : MonoBehaviour
     public float pushForce = 1000f;
     
     [Header("Oracle Dialog")]
-    public Transform oracleNPC; // Référence vers l'Oracle NPC
-    public string oracleMessage = "Vous n'avez pas encore l'XP nécessaire pour venir me voir...";
+    public Transform oracleNPC; // Reference to Oracle NPC
+    public string oracleMessage = "You don't have the necessary XP to come see me yet...";
     public float dialogDisplayTime = 3f;
     
     private SimplePlayerXP playerXP;
@@ -34,7 +34,7 @@ public class SimpleRestrictedZone : MonoBehaviour
         
         if (playerXP == null)
         {
-            Debug.LogError("[SimpleRestrictedZone] SimplePlayerXP not found!");
+            enabled = false;
             return;
         }
 
@@ -44,7 +44,6 @@ public class SimpleRestrictedZone : MonoBehaviour
             CreateInvisibleWall();
         }
         
-        Debug.Log($"[SimpleRestrictedZone] Zone requires level {requiredLevel}");
         UpdateZoneAccess();
     }
     
@@ -72,8 +71,6 @@ public class SimpleRestrictedZone : MonoBehaviour
             newBoxCol.size = new Vector2(diameter, diameter);
             Destroy(wallCollider);
         }
-        
-        Debug.Log("[SimpleRestrictedZone] Created invisible wall");
     }
     
     // Update is called once per frame
@@ -93,24 +90,15 @@ public class SimpleRestrictedZone : MonoBehaviour
         {
             wasAccessible = canAccess;
             
-            if (canAccess)
+            if (GetComponent<SpriteRenderer>())
             {
-                Debug.Log("[SimpleRestrictedZone] ACCESS GRANTED! Zone is now open.");
-                if (GetComponent<SpriteRenderer>())
-                    GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            else
-            {
-                Debug.Log("[SimpleRestrictedZone] Access denied - need level " + requiredLevel);
-                if (GetComponent<SpriteRenderer>())
-                    GetComponent<SpriteRenderer>().color = Color.red;
+                GetComponent<SpriteRenderer>().color = canAccess ? Color.green : Color.red;
             }
             
-            // Activer/désactiver le mur bloquant
+            // Enable/disable blocking wall
             if (blockingWall != null)
             {
                 blockingWall.SetActive(!canAccess);
-                Debug.Log($"[SimpleRestrictedZone] Wall {(canAccess ? "disabled" : "enabled")}");
             }
         }
     }
@@ -132,38 +120,27 @@ public class SimpleRestrictedZone : MonoBehaviour
         }
     }
     
-    // Notify the player when they enter the zone
+    // Notify player when they enter the zone
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
         
         if (playerXP.currentLevel < requiredLevel)
         {
-            Debug.Log($"[SimpleRestrictedZone] Access denied! You are level {playerXP.currentLevel}, need level {requiredLevel}");
             ShowOracleDialog();
         }
-        else
-        {
-            Debug.Log("[SimpleRestrictedZone] Welcome to the restricted area!");
-        }
     }
     
-    // Afficher le dialogue de l'Oracle
+    // Show Oracle dialog
     void ShowOracleDialog()
     {
-        if (oracleNPC == null)
-        {
-            Debug.LogWarning("[SimpleRestrictedZone] Oracle NPC not assigned!");
-            return;
-        }
+        if (oracleNPC == null) return;
         
-        // Utiliser SendMessage pour déclencher le dialogue
+        // Use SendMessage to trigger dialog
         oracleNPC.SendMessage("TriggerOracleDialog", new OracleDialogData { message = oracleMessage, displayTime = dialogDisplayTime }, SendMessageOptions.DontRequireReceiver);
-        
-        Debug.Log("[SimpleRestrictedZone] Oracle dialog triggered");
     }
     
-    // Structure pour passer les données du dialogue
+    // Structure to pass dialog data
     [System.Serializable]
     public class OracleDialogData
     {
