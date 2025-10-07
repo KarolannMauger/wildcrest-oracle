@@ -35,7 +35,7 @@ public class FadeOut2D : MonoBehaviour
             if (destroyAfter) Destroy(gameObject);
             else gameObject.SetActive(false);
             
-            // Démarrer la transition vers la scène de victoire
+            // Start transition to victory scene
             StartCoroutine(LoadVictoryScene());
         }
     }
@@ -55,14 +55,12 @@ public class FadeOut2D : MonoBehaviour
         }
     }
     
-    // Coroutine pour charger la scène de victoire après un délai
+    // Coroutine to load victory scene after delay
     IEnumerator LoadVictoryScene()
     {
-        Debug.Log($"[FadeOut2D] Waiting {delayBeforeSceneChange} seconds before loading {victorySceneName}");
         yield return new WaitForSecondsRealtime(delayBeforeSceneChange);
         
-        Debug.Log($"[FadeOut2D] Loading victory scene: {victorySceneName}");
-        Time.timeScale = 1f; // Remettre le temps normal avant de changer de scène
+        Time.timeScale = 1f; // Reset time scale before scene change
         SceneManager.LoadScene(victorySceneName);
     }
 }
