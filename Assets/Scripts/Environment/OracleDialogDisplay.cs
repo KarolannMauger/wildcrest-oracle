@@ -1,45 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class OracleDialogDisplay : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject dialogBox; // Votre DialogBox existant
-    public Text dialogText; // Votre Text existant
+    public GameObject dialogBox; // Your existing DialogBox
+    public TextMeshProUGUI dialogText; // Your existing Text
     
     [Header("Dialog Settings")]
-    public Vector3 dialogOffset = new Vector3(0, 2, 0); // Au-dessus de l'Oracle
+    public Vector3 dialogOffset = new Vector3(0, 2, 0); // Above the Oracle
     
     private bool isShowing = false;
     private Coroutine hideCoroutine;
     
     void Start()
     {
-        // Vérifier les références
-        if (dialogBox == null)
+        // Check references
+        if (dialogBox == null || dialogText == null)
         {
-            Debug.LogError("[OracleDialogDisplay] Dialog Box not assigned!");
+            enabled = false;
+            return;
         }
         
-        if (dialogText == null)
-        {
-            Debug.LogError("[OracleDialogDisplay] Dialog Text not assigned!");
-        }
+        // Hide dialog box at start
+        dialogBox.SetActive(false);
         
-        // Cacher la dialog box au début
-        if (dialogBox != null)
-        {
-            dialogBox.SetActive(false);
-        }
-        
-        // Positionner la dialog box au-dessus de l'Oracle
-        if (dialogBox != null)
-        {
-            dialogBox.transform.position = transform.position + dialogOffset;
-        }
-        
-        Debug.Log("[OracleDialogDisplay] Using existing UI components");
+        // Position dialog box above Oracle
+        dialogBox.transform.position = transform.position + dialogOffset;
     }
     
 
@@ -60,17 +49,15 @@ public class OracleDialogDisplay : MonoBehaviour
             dialogBox.SetActive(true);
         }
         
-        // Programmer la fermeture automatique
+        // Schedule automatic close
         if (hideCoroutine != null)
         {
             StopCoroutine(hideCoroutine);
         }
         hideCoroutine = StartCoroutine(HideAfterDelay(displayTime));
-        
-        Debug.Log($"[OracleDialogDisplay] Showing message: {message}");
     }
     
-    // Méthode pour recevoir les messages via SendMessage
+    // Method to receive messages via SendMessage
     public void TriggerOracleDialog(SimpleRestrictedZone.OracleDialogData data)
     {
         ShowMessage(data.message, data.displayTime);
@@ -90,11 +77,9 @@ public class OracleDialogDisplay : MonoBehaviour
         {
             dialogBox.SetActive(false);
         }
-        
-        Debug.Log("[OracleDialogDisplay] Message hidden");
     }
     
-    // Méthode pour changer la position du dialogue
+    // Method to change dialog position
     public void SetDialogOffset(Vector3 offset)
     {
         dialogOffset = offset;
