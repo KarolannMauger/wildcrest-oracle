@@ -7,7 +7,7 @@ public class CowNPC : MonoBehaviour
     
     void Start()
     {
-        // Si pas de dialog system assigné, essayer de le trouver sur le même GameObject
+        // Find dialog system if not assigned
         if (dialogSystem == null)
         {
             dialogSystem = GetComponent<SimpleDialogSystem>();
@@ -15,15 +15,11 @@ public class CowNPC : MonoBehaviour
         
         if (dialogSystem == null)
         {
-            Debug.LogError("[CowNPC] SimpleDialogSystem not found!");
-        }
-        else
-        {
-            Debug.Log("[CowNPC] Cow NPC ready to talk!");
+            enabled = false;
         }
     }
     
-    // Méthode pour déclencher le dialogue manuellement si nécessaire
+    // Trigger dialog manually if needed
     public void TriggerDialog()
     {
         if (dialogSystem != null)
