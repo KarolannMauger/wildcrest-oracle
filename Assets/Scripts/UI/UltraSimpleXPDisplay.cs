@@ -14,7 +14,7 @@ public class UltraSimpleXPDisplay : MonoBehaviour
     // Initialize references
     void Start()
     {
-        // Search SimplePlayerXP
+        // Find SimplePlayerXP
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -23,19 +23,16 @@ public class UltraSimpleXPDisplay : MonoBehaviour
         
         if (playerXP == null)
         {
-            Debug.LogError("[UltraSimpleXPDisplay] SimplePlayerXP not found!");
             enabled = false;
             return;
         }
         
-        // Configurer le slider
+        // Configure slider
         if (xpSlider != null)
         {
             xpSlider.minValue = 0f;
             xpSlider.maxValue = 1f;
         }
-        
-        Debug.Log("[UltraSimpleXPDisplay] Initialized successfully");
     }
 
     // Update the XP display
@@ -43,19 +40,19 @@ public class UltraSimpleXPDisplay : MonoBehaviour
     {
         if (playerXP == null) return;
 
-        // Update the slider (XP bar)
+        // Update slider (XP bar)
         if (xpSlider != null)
         {
             xpSlider.value = playerXP.GetXPPercentage();
         }
 
-        // Update the level text
+        // Update level text
         if (levelText != null)
         {
             levelText.text = playerXP.GetXPDisplayText();
         }
 
-        // Update the XP progress text
+        // Update XP progress text
         if (xpProgressText != null)
         {
             xpProgressText.text = playerXP.GetXPProgressText();
