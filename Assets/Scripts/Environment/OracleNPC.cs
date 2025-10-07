@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class OracleNPC : MonoBehaviour
 {
@@ -50,7 +52,19 @@ public class OracleNPC : MonoBehaviour
         if (dialogDisplay != null)
         {
             dialogDisplay.ShowMessage(victoryMessage, dialogDuration);
+            
+            // Launch Victory scene after dialog duration
+            StartCoroutine(LoadVictorySceneAfterDialog());
         }
+    }
+    
+    IEnumerator LoadVictorySceneAfterDialog()
+    {
+        // Wait for dialog to finish displaying
+        yield return new WaitForSeconds(dialogDuration);
+        
+        // Load Victory scene
+        SceneManager.LoadScene("Victory");
     }
     
     // Public method to check if victory was triggered
