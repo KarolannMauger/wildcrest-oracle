@@ -3,7 +3,7 @@ using UnityEngine;
 public class OracleNPC : MonoBehaviour
 {
     [Header("Victory Dialog")]
-    public string victoryMessage = "Félicitation à toi Luma, ton frère se cache dans les ruines du wildcrest, vient avec moi je vais te guider jusqu'au ruine.";
+    public string victoryMessage = "Congratulations Luma, your brother is hiding in the wildcrest ruins, come with me I will guide you to the ruins.";
     public float dialogDuration = 5f;
     public int requiredLevel = 4;
     
@@ -13,7 +13,7 @@ public class OracleNPC : MonoBehaviour
     
     void Start()
     {
-        // Trouver les composants nécessaires
+        // Find required components
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -22,17 +22,10 @@ public class OracleNPC : MonoBehaviour
         
         dialogDisplay = GetComponent<OracleDialogDisplay>();
         
-        if (playerXP == null)
+        if (playerXP == null || dialogDisplay == null)
         {
-            Debug.LogError("[OracleNPC] SimplePlayerXP not found on player!");
+            enabled = false;
         }
-        
-        if (dialogDisplay == null)
-        {
-            Debug.LogError("[OracleNPC] OracleDialogDisplay not found on Oracle!");
-        }
-        
-        Debug.Log($"[OracleNPC] Oracle ready - requires level {requiredLevel}");
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -43,12 +36,7 @@ public class OracleNPC : MonoBehaviour
         
         if (playerXP.currentLevel >= requiredLevel)
         {
-            Debug.Log($"[OracleNPC] Player reached level {playerXP.currentLevel} - showing victory message!");
             ShowVictoryMessage();
-        }
-        else
-        {
-            Debug.Log($"[OracleNPC] Player level {playerXP.currentLevel} - need level {requiredLevel}");
         }
     }
     
@@ -58,16 +46,14 @@ public class OracleNPC : MonoBehaviour
         
         victoryTriggered = true;
         
-        // Afficher le dialogue de victoire
+        // Show victory dialog
         if (dialogDisplay != null)
         {
             dialogDisplay.ShowMessage(victoryMessage, dialogDuration);
         }
-        
-        Debug.Log("[OracleNPC] Victory message displayed - your existing fadeout script will handle the rest!");
     }
     
-    // Méthode publique pour vérifier si la victoire a été déclenchée
+    // Public method to check if victory was triggered
     public bool IsVictoryTriggered()
     {
         return victoryTriggered;
