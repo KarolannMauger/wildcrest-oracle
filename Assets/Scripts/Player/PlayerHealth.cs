@@ -1,16 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("PV")]
+    [Header("Health")]
     public int maxHealth = 10;
     public int CurrentHealth { get; private set; }
 
-    [Header("Dead / Reload")]
+    [Header("Death / Reload")]
     public float reloadDelay = 3f;
     public string sceneToLoad = "GameOver";
     private string deathTriggerName = "dead";
+    private string respawnTriggerName = "respawn";
 
     [Header("Damage Effects")]
     public float shakeDuration = 0.3f;
@@ -29,6 +31,13 @@ public class PlayerHealth : MonoBehaviour
     private Color originalColor;
     private Coroutine shakeCoroutine;
     private Coroutine colorFlashCoroutine;
+    
+    [Header("Respawn")]
+    public bool useRespawn = true;
+    public int maxRespawns = 2;
+    private Vector3 lastSafePosition;
+    private SimplePlayerXP playerXP;
+    private int respawnCount = 0;
 
     // Initialize components and variables
     void Awake()
@@ -37,48 +46,52 @@ public class PlayerHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
+        playerXP = GetComponent<SimplePlayerXP>();
         
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
         originalPosition = transform.position;
+        lastSafePosition = transform.position; // Initial position as safe position
         if (spriteRenderer)
             originalColor = spriteRenderer.color;
-
-        Debug.Log($"[PlayerHealth] Init HP = {CurrentHealth}/{maxHealth}");
+    }
+    
+    void Update()
+    {
+        // Save position regularly when player is not in danger
+        if (!isDead && CurrentHealth > 0)
+        {
+            lastSafePosition = transform.position;
+        }
     }
 
-    // Function to apply damage to the player
+    // Apply damage to the player
     public void TakeDamage(int dmg)
     {
         if (isDead || dmg <= 0) return;
 
         CurrentHealth = Mathf.Max(0, CurrentHealth - dmg);
-        Debug.Log($"[PlayerHealth] -{dmg} HP → {CurrentHealth}/{maxHealth}");
 
-        // Damage effects
+        // Play damage effects
         PlayDamageEffects();
 
         if (CurrentHealth <= 0) Die();
     }
 
-    // Heals if possible and returns true if health points were gained.
+    // Heal player if possible and return true if health was gained
     public bool TryHeal(int amount)
     {
         if (amount <= 0) return false;
 
         if (CurrentHealth >= maxHealth)
-        {
-            Debug.Log("[PlayerHealth] Health full → no healing.");
             return false;
-        }
 
         int old = CurrentHealth;
         CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + amount);
         int gained = CurrentHealth - old;
 
-        Debug.Log($"[PlayerHealth] +{gained} HP → {CurrentHealth}/{maxHealth}");
         return gained > 0;
     }
 
@@ -87,19 +100,71 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
 
-        Debug.Log("Player is dead!");
+        isDead = true;
 
         if (animator && !string.IsNullOrEmpty(deathTriggerName))
             animator.SetTrigger(deathTriggerName);
 
-        if (reloadDelay <= 0f) SceneManager.LoadScene(sceneToLoad);
-        else StartCoroutine(CoDelay(sceneToLoad, reloadDelay));
+        if (useRespawn)
+        {
+            // Check if player can still respawn
+            if (respawnCount < maxRespawns)
+            {
+                // Respawn after delay
+                StartCoroutine(RespawnAfterDelay());
+            }
+            else
+            {
+                // No more respawns available → Game Over
+                if (reloadDelay <= 0f) SceneManager.LoadScene(sceneToLoad);
+                else StartCoroutine(CoDelay(sceneToLoad, reloadDelay));
+            }
+        }
+        else
+        {
+            // Original system - reload scene
+            if (reloadDelay <= 0f) SceneManager.LoadScene(sceneToLoad);
+            else StartCoroutine(CoDelay(sceneToLoad, reloadDelay));
+        }
     }
 
-    // Play visual and audio effects when player taking damage
+    // Respawn after delay
+    private IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(reloadDelay);
+        Respawn();
+    }
+
+    // Respawn function
+    private void Respawn()
+    {
+        respawnCount++;
+        
+        // 1. Restore health to maximum
+        CurrentHealth = maxHealth;
+        
+        // 2. Reposition player to last safe position
+        transform.position = lastSafePosition;
+        
+        // 3. XP remains intact - no reset
+        
+        // 4. Reset death animation
+        if (animator != null)
+        {
+            // Reset death trigger and activate respawn
+            animator.ResetTrigger(deathTriggerName);
+            animator.SetTrigger(respawnTriggerName);
+            animator.SetFloat("speed", 0f);
+        }
+        
+        // 5. Set isDead to false
+        isDead = false;
+    }
+
+    // Play visual and audio effects when player takes damage
     private void PlayDamageEffects()
     {
-        // Damage sound effect futur feature
+        // Play damage sound effect
         if (takeDamageSfx && audioSource)
         {
             audioSource.PlayOneShot(takeDamageSfx);
@@ -116,7 +181,7 @@ public class PlayerHealth : MonoBehaviour
         colorFlashCoroutine = StartCoroutine(ColorFlashEffect());
     }
 
-    // Shake the player to indicate damage
+    // Shake effect to indicate damage
     private IEnumerator ShakeEffect()
     {
         originalPosition = transform.position;
@@ -136,7 +201,7 @@ public class PlayerHealth : MonoBehaviour
         shakeCoroutine = null;
     }
 
-    // Flash the sprite color to indicate damage
+    // Flash sprite color to indicate damage
     private IEnumerator ColorFlashEffect()
     {
         if (!spriteRenderer) yield break;
@@ -147,7 +212,7 @@ public class PlayerHealth : MonoBehaviour
         colorFlashCoroutine = null;
     }
 
-    // Delay before reloading the scene
+    // Delay before reloading scene
     IEnumerator CoDelay(string name, float seconds)
     {
         yield return new WaitForSecondsRealtime(seconds);
