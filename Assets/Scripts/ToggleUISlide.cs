@@ -4,12 +4,12 @@ using System.Collections;
 
 public class ToggleUISlide : MonoBehaviour
 {
-    public RectTransform UI;  // assigner dans l'Inspector
-    public bool isOpenButton = true; // true pour bouton Menu, false pour bouton Continuer
+    public RectTransform UI;  // Assign in Inspector
+    public bool isOpenButton = true; // true for Menu button, false for Continue button
     
     private Button button;
-    private static bool isVisible = false;  // static pour partager entre tous les boutons
-    private float slideDistance = 700f; // distance vers gauche/droite
+    private static bool isVisible = false;  // static to share between all buttons
+    private float slideDistance = 700f; // distance to left/right
     public float speed = 1f;
 
     void Start()
@@ -18,7 +18,7 @@ public class ToggleUISlide : MonoBehaviour
         if (button != null)
             button.onClick.AddListener(HandleButtonClick);
 
-        // Met l'UI caché au démarrage (seulement une fois)
+        // Hide UI at startup (only once)
         if (!isVisible)
         {
             UI.anchoredPosition += new Vector2(-slideDistance, 0);
@@ -29,17 +29,17 @@ public class ToggleUISlide : MonoBehaviour
     {
         if (isOpenButton && !isVisible)
         {
-            // Bouton Menu : ouvre seulement si fermé
+            // Menu button: opens only if closed
             OpenMenu();
         }
         else if (!isOpenButton && isVisible)
         {
-            // Bouton Continuer : ferme seulement si ouvert
+            // Continue button: closes only if open
             CloseMenu();
         }
         else if (isOpenButton && isVisible)
         {
-            // Bouton Menu utilisé pour fermer aussi
+            // Menu button used to close as well
             CloseMenu();
         }
     }
@@ -65,7 +65,7 @@ public class ToggleUISlide : MonoBehaviour
         float t = 0;
         while (t < 1)
         {
-            // ⚡ Utilise unscaledDeltaTime pour que l'UI continue à bouger même en pause
+            // Use unscaledDeltaTime so UI continues to move even when paused
             t += Time.unscaledDeltaTime * speed;
             UI.anchoredPosition = Vector2.Lerp(start, end, t);
             yield return null;
