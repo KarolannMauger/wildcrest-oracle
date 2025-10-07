@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class HealthDisplay : MonoBehaviour
 {
     [Header("References")]
-
     public int health;
     public int maxHealth;
 
@@ -30,7 +30,6 @@ public class HealthDisplay : MonoBehaviour
 
         if (playerHealth == null)
         {
-            Debug.LogError("[HealthDisplay] PlayerHealth not found!");
             enabled = false;
             return;
         }
