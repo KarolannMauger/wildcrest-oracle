@@ -2,8 +2,8 @@ using UnityEngine;
 
 public enum EnemyType
 {
-    Cat,    // Level 0: 3 HP, 1 dégât
-    Pig     // Level 4: 10 HP, 3 dégâts
+    Cat,    // Level 0: 3 HP, 1 damage
+    Pig     // Level 4: 10 HP, 3 damage
 }
 
 public enum MovementType
@@ -52,7 +52,6 @@ public class ModularEnemy : MonoBehaviour
     
     private bool movingPositive = true;
     private float lastAttackTime = -999f;
-    private int currentHealth;
     
     // Initialization
     void Awake()
@@ -78,10 +77,6 @@ public class ModularEnemy : MonoBehaviour
         {
             animator.speed = animationSpeed;
         }
-        
-        currentHealth = maxHealth;
-        
-        Debug.Log($"[ModularEnemy] {enemyType} initialized - HP: {maxHealth}, Damage: {touchDamage}, Movement: {movementType}");
     }
     
     // Configure enemy stats based on its type
@@ -148,7 +143,7 @@ public class ModularEnemy : MonoBehaviour
         }
     }
     
-    // Check if the player is behind the enemy and turn around if so
+    // Check if player is behind enemy and turn around if so
     void CheckPlayerBehind()
     {
         Vector2 toPlayer = (Vector2)player.position - (Vector2)transform.position;
@@ -164,7 +159,6 @@ public class ModularEnemy : MonoBehaviour
             if (playerBehind && movementType == MovementType.Horizontal)
             {
                 movingPositive = playerOnRight;
-                Debug.Log($"[ModularEnemy] {enemyType} detected player behind! Turning around");
             }
         }
     }
@@ -177,8 +171,6 @@ public class ModularEnemy : MonoBehaviour
             // Check attack cooldown
             if (Time.time - lastAttackTime < attackCooldown)
                 return;
-            
-            Debug.Log($"[ModularEnemy] {enemyType} attacking player!");
 
             // Trigger attack animation
             if (animator != null && !string.IsNullOrEmpty(attackTrigger))
@@ -186,11 +178,10 @@ public class ModularEnemy : MonoBehaviour
                 animator.SetTrigger(attackTrigger);
             }
 
-            // The enemy inflicts damage on the player
+            // Inflict damage on player
             var playerHp = col.collider.GetComponent<PlayerHealth>();
             if (playerHp)
             {
-                Debug.Log($"[ModularEnemy] {enemyType} inflicts {touchDamage} damage to Player");
                 playerHp.TakeDamage(touchDamage);
                 if (hitSfx != null)
                 {
@@ -206,11 +197,11 @@ public class ModularEnemy : MonoBehaviour
     {
         if (!enablePlayerDetection) return;
 
-        // Player detection zone behind
+        // Player detection zone
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, behindDetectionRadius);
         
-        // Direction
+        // Direction indicator
         Gizmos.color = Color.blue;
         Vector3 direction = Vector3.right;
         if (movementType == MovementType.Horizontal)
