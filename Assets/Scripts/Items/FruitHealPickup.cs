@@ -5,7 +5,7 @@ public class FruitHealPickup : MonoBehaviour
 {
     public int healAmount = 1;
     public bool destroyOnPickup = true;
-    public AudioClip pickupSfx; // futur feature
+    public AudioClip pickupSfx;
 
     void Reset()
     {
@@ -15,30 +15,21 @@ public class FruitHealPickup : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")){return;}
+        if (!other.CompareTag("Player")) return;
 
         var hp = other.GetComponent<PlayerHealth>();
-        if (!hp)
-        {
-            Debug.Log("[FruitHealPickup] Player does not have PlayerHealth!");
-            return;
-        }
+        if (!hp) return;
 
-        // Try to heal; only consume the fruit if HP was actually gained
+        // Try to heal; only consume fruit if HP was actually gained
         bool healed = hp.TryHeal(healAmount);
 
-        if (!healed)
-        {
-            Debug.Log("[FruitHealPickup] HP full → fruit NOT picked up.");
-            return;
-        }
+        if (!healed) return;
 
-
-        // futur feature
+        // Play pickup sound and destroy
         if (pickupSfx) AudioSource.PlayClipAtPoint(pickupSfx, transform.position);
+        
         if (destroyOnPickup)
         {
-            Debug.Log("[FruitHealPickup] Pickup consumed and destroyed.");
             Destroy(gameObject);
         }
     }
