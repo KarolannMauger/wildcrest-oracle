@@ -24,3 +24,8 @@ Assets/Plugins/Editor/
 # OS
 .DS_Store
 Thumbs.db
+
+# Recordings (videos too large for Git)
+Recordings/*.mp4
+Recordings/*.mov
+Recordings/*.avi
