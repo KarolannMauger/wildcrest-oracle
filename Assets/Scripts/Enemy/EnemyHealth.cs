@@ -21,7 +21,6 @@ public class EnemyHealth : MonoBehaviour
     public int xpReward = 1;
     
     [Header("Audio")]
-    public AudioClip takeDamageSfx;
     public AudioClip deathSfx;
 
     private SpriteRenderer spriteRenderer;
@@ -67,12 +66,6 @@ public class EnemyHealth : MonoBehaviour
     // Play visual and audio effects when enemy takes damage
     private void PlayDamageEffects()
     {
-        // Play damage sound effect
-        if (takeDamageSfx && audioSource)
-        {
-            audioSource.PlayOneShot(takeDamageSfx);
-        }
-
         // Shake effect
         if (shakeCoroutine != null)
             StopCoroutine(shakeCoroutine);

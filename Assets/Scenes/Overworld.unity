@@ -2342,6 +2342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenPigEnemy3
       objectReference: {fileID: 0}
+    - target: {fileID: 8412867611682057664, guid: 0493491b3ac5344009f953a05ba3bc92, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5234,6 +5238,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatEnemy4
       objectReference: {fileID: 0}
+    - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     - target: {fileID: 2833452019732800747, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.31
@@ -6472,8 +6480,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091f5427ca8f24ea09b046a675405391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OracleNPC
-  victoryMessage: "F\xE9licitation \xE0 toi Luma, ton fr\xE8re se cache dans les
-    ruines du wildcrest, vient avec moi je vais te guider jusqu'au ruine."
+  victoryMessage: Congratulations Luma, your brother is hiding in the wildcrest ruins,
+    come with me I will guide you to the ruins.
   dialogDuration: 5
   requiredLevel: 4
 --- !u!1001 &864715731
@@ -7615,6 +7623,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatEnemy2
       objectReference: {fileID: 0}
+    - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
       propertyPath: maxHealth
       value: 3
@@ -14108,7 +14120,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5253742470180583109, guid: caa9e63004c414f3b9d6ee7e9439810f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1612114774}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caa9e63004c414f3b9d6ee7e9439810f, type: 3}
 --- !u!1001 &1304135907
@@ -14179,6 +14194,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenPigEnemy2
       objectReference: {fileID: 0}
+    - target: {fileID: 8412867611682057664, guid: 0493491b3ac5344009f953a05ba3bc92, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14906,7 +14925,7 @@ MonoBehaviour:
   shakeIntensity: 0.1
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   colorFlashDuration: 0.2
-  takeDamageSfx: {fileID: 0}
+  takeDamageSfx: {fileID: 8300000, guid: 3a912c0828b1c4685a35bee78e1e7b59, type: 3}
   useRespawn: 1
   maxRespawns: 2
 --- !u!114 &1356962338
@@ -18810,6 +18829,85 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!1 &1612114771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1612114774}
+  - component: {fileID: 1612114773}
+  - component: {fileID: 1612114772}
+  m_Layer: 5
+  m_Name: Creator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1612114772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612114771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.48235294}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+    m_FontSize: 11
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Created by Karolann Mauger
+--- !u!222 &1612114773
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612114771}
+  m_CullTransparentMesh: 1
+--- !u!224 &1612114774
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612114771}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 6.2994337, y: 6.182063, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2122845759}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1542.4175, y: -1250.5392}
+  m_SizeDelta: {x: 334.4049, y: 55.1118}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1619903500
 GameObject:
   m_ObjectHideFlags: 0
@@ -19124,6 +19222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatEnemy3
       objectReference: {fileID: 0}
+    - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     - target: {fileID: 2833452019732800747, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
       propertyPath: m_LocalPosition.x
       value: 31.64
@@ -24201,15 +24303,15 @@ SpriteRenderer:
   m_SortingLayerID: -917210015
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.24, y: 0.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &1786671819
@@ -75638,6 +75740,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenPigEnemy4
       objectReference: {fileID: 0}
+    - target: {fileID: 8412867611682057664, guid: 0493491b3ac5344009f953a05ba3bc92, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -77354,6 +77460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenPigEnemy1
       objectReference: {fileID: 0}
+    - target: {fileID: 8412867611682057664, guid: 0493491b3ac5344009f953a05ba3bc92, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -77447,6 +77557,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatEnemy1
       objectReference: {fileID: 0}
+    - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
+      propertyPath: deathSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 33c314def4cd8479da9fbee8bc9925ce, type: 3}
     - target: {fileID: 1453425727615452503, guid: f2e1956de85854bc5a0d0bf35681ae14, type: 3}
       propertyPath: maxHealth
       value: 3
